@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>添加部门</title>
+<link rel="stylesheet" href="css/layui.css" />
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+		<script type="text/javascript" src="js/layui.js"></script>
+		
+		</head>
+		
+		<body>
+  
+  <div class="layui-body">
+    <!-- 内容主体区域 -->
+    <div class="container">
+			<div class="jumbotron">
+			  <h4>添加员工信息</h4>
+			   
+			</div>
+			
+		</div>
+	<div class="container">
+	<form class="layui-form" action="">
+  <div class="layui-form-item">
+    <label class="layui-form-label">添加部门：</label>
+    <div class="layui-input-block">
+      <input type="text"   id="departmentValue"  required  lay-verify="required" placeholder="输入新增的部门" autocomplete="off" class="layui-input">
+    </div>
+  </div>
+ 
+  
+  <div class="layui-form-item">
+    <div class="layui-input-block">
+      <button class="layui-btn" type="button"  onclick="InsertDepartmentValue()">立即添加</button>
+      <button type="reset"  class="layui-btn layui-btn-primary"  >重置</button>
+    </div>
+  </div>
+</form>
+	</div>
+	 
+	<script type="text/javascript" src="js/my/inserdepartment.js"></script>
+	
+    
+  </div>
+ 
+
+<script>
+//JavaScript代码区域
+layui.use('element', function(){
+  var element = layui.element;
+  
+});
+</script>
+ 
+ 
+	 
+		<!-- <script src="js/layui.all.js"></script> -->
+		<script src="js/jquery-3.3.1.min.js"></script>
+</body>
+</html>

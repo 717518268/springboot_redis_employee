@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wang.dao.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.wang.pojo.User" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <id column="number" property="number" jdbcType="INTEGER" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="registertime" property="registertime" jdbcType="TIMESTAMP" />
+    <result column="did" property="did" jdbcType="INTEGER" />
+    <association property="department" javaType="com.wang.pojo.Department">
+      <id column="id" property="id" jdbcType="INTEGER" />
+      <id column="dname" property="dname" jdbcType="VARCHAR" />
+      <result column="nid" property="nid" jdbcType="INTEGER" />
+    </association>
+
+  </resultMap>
+  
+   <resultMap id="BaseResultMapName" type="com.wang.pojo.User" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <id column="number" property="number" jdbcType="INTEGER" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="registertime" property="registertime" jdbcType="TIMESTAMP" />
+    <result column="did" property="did" jdbcType="INTEGER" />
+    <association property="department" javaType="com.wang.pojo.Department">
+      <id column="id" property="id" jdbcType="INTEGER" />
+      <id column="dname" property="dname" jdbcType="VARCHAR" />
+      <result column="nid" property="nid" jdbcType="INTEGER" />
+    </association>
+
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, number, username, sex, registertime, did
+  </sql>
+
+  <select id="selectBynumberid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+   select u.id,u.number,u.username,u.sex,u.registertime,u.did,
+    d.id,d.dname,d.nid 
+    from
+    user as u ,
+    department as d
+    where u.did=d.nid  and  u.number=#{numberid,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectBy_numberid_one" resultType="com.wang.pojo.User"  parameterType="java.lang.Integer" >
+   select  
+   <include refid="Base_Column_List" />
+    from
+    user 
+    
+    where  number=#{numberid,jdbcType=INTEGER} limit 1
+  </select>
+  <select id="selectIdForUser" resultType="com.wang.pojo.User" parameterType="java.lang.String">
+  
+  select  
+  <include refid="Base_Column_List" />
+   from
+    user 
+    where id=#{id,jdbcType=VARCHAR} limit 1
+  
+  </select>
+  
+  <!-- 根据名字查询一对多 -->
+  <select id="selectBy_Name" resultType="com.wang.pojo.User"  parameterType="java.lang.String" >
+    select  
+    <include refid="Base_Column_List" />
+     from
+    user  
+    where  username=#{username} limit 1
+  </select>
+  
+  
+<!--   
+  <select id="" resultType="java.lang.Integer" parameterType="">
+  
+  select timestampdiff(day,date=#{date}, now())
+  </select>
+   -->
+  
+  <select id="SelectAllDidDepartment" resultType="com.wang.pojo.User" parameterType="java.lang.Integer">
+  
+  select 
+   <include refid="Base_Column_List" />
+   from user where did=#{did,jdbcType=INTEGER}
+   
+  </select>
+
+  <select id="selectAllNumber" resultType="com.wang.pojo.User">
+    select  <include refid="Base_Column_List" />
+     from user
+  </select>
+
+	<!-- 获取所有年份 -->
+	<select id="selectAll_registertime" resultType="com.wang.pojo.User">
+   	 select registertime from user
+  	</select>
+	
+	<select id="selectByDidAll" resultType="com.wang.pojo.User" parameterType="java.lang.Integer">
+	
+	select  number from user where did=#{did,jdbcType=INTEGER}
+	</select>
+	
+	<!-- 计算当前时间与入职时间的总天数 -->
+	<select id="selectByRegistertime_NowTime" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+	
+	select timestampdiff(day,u.registertime,now()) from user u where number=#{number,jdbcType=INTEGER};
+	</select>
+	
+	
+	
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from user
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+   
+	
+	 <insert id="insertSelective" parameterType="com.wang.pojo.User">
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+        <if test="id != null" >
+        id,
+      </if>
+      <if test="number != null" >
+        number,
+      </if>
+      <if test="username != null" >
+        username,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="registertime != null" >
+        registertime,
+      </if>
+      <if test="did != null" >
+        did,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null" >
+        #{number,jdbcType=INTEGER},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="registertime != null" >
+        #{registertime},
+      </if>
+       <if test="did != null" >
+        #{did,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+	
+	  
+	 <update id="updateByPrimaryKey" parameterType="com.wang.pojo.User" >
+    update user
+    set number=#{number,jdbcType=INTEGER},
+       username=#{username,jdbcType=VARCHAR},
+       sex=#{sex,jdbcType=VARCHAR},
+       registertime=#{registertime},
+       did=#{did}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+   
+    <update id="updateBynumbers" parameterType="com.wang.pojo.User" >
+    update user
+    set
+       number=#{number,jdbcType=INTEGER}
+      
+    where id=#{id,jdbcType=VARCHAR}
+  </update>
+  
+  
+   <update id="updateByName" parameterType="com.wang.pojo.User" >
+    update user
+    set
+       username=#{username,jdbcType=VARCHAR}
+      
+    where number=#{number,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateRegitserTime" parameterType="com.wang.pojo.User" >
+    update user
+    set
+       registertime=#{registertime}
+      
+    where number=#{number,jdbcType=INTEGER}
+  </update>
+  
+   <update id="updatedepartment" parameterType="com.wang.pojo.User" >
+    update user
+    set
+       did=#{did,jdbcType=INTEGER}
+      
+    where number=#{number,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updaterByAllid" parameterType="com.wang.pojo.User">
+  update user set id=#{id} where number=#{number}
+  </update>
+
+</mapper>

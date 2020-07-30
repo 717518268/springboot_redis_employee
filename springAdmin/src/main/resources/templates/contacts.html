@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit">
+  	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title> 查询个人员工中心</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+	<link rel="stylesheet" href="css/layui.css" />
+    <link rel="shortcut icon" href="favicon.ico"> <link href="css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="css/font-awesome.css?v=4.4.0" rel="stylesheet">
+
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css?v=4.1.0" rel="stylesheet">
+  
+	<script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+</head>
+
+<body class="gray-bg"  ng-app='app' ng-controller='mainController'>
+
+
+  <div class="layui-body">
+    <!-- 内容主体区域 -->
+   <div class="container">
+			<div class="jumbotron">
+			  <h4>欢迎来到我的数据中心</h4>
+			   
+			</div>
+			
+		</div>
+
+
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+        
+        
+            <div class="col-md-5">
+                
+            </div>
+           <!-- col-md-5 end -->
+             <div class="layui-tab">
+  <ul class="layui-tab-title">
+    
+    <li class="layui-this">用户中心</li>
+    <li>休假查看</li>
+    <li>申请休假</li>
+    
+  </ul>
+  <div class="layui-tab-content">
+    <div class="layui-tab-item layui-show"> 
+     <div class="contact-box">
+                    <a href="">
+                        <div class="col-xs-3">
+                            <div class="text-center">
+                                <img alt="image" class="img-circle m-t-xs img-responsive" src="img/user.jpg">
+                                <div class="m-t-xs font-bold">{{users.number}}  </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-3">
+                            <h3><strong><span>{{users.username}}</span> </strong></h3>
+                            <p><i class="fa fa-map-marker"></i> 入职时间 </p>
+                            <address>
+                            <strong> {{users.registertime}}</strong><br>
+                       <span>    部门: {{users.department.dname}}</span><br>
+                           工龄：<span>{{users.yearanmethod}}</span><br>
+                            <abbr title="Phone">可休假天数:</abbr> <span>{{users.count}}</span>
+                        </address>
+                        </div>
+                        <div class="clearfix"></div>
+                    </a>
+                </div>
+                <!-- x -->
+                 <div class="col-xs-5"> 
+             <table class="layui-table">
+  
+			  <thead>
+			    <tr>
+			      <th>选择修改</th>
+			     
+			    </tr> 
+			  </thead>
+			  <tbody>
+			  <tr>
+			      <td><a ng-click="updateDepartmentNumber(users.number)">修改员工编号</a></td>
+			      
+			    </tr>
+			    <tr>
+			      <td><a ng-click="updateName(users.username)">修改名字</a></td>
+			      
+			    </tr>
+			    <tr>
+			      <td><a ng-click="updateRegitserTime(users.registertime)">修改入职时间</a></td>
+			      
+			    </tr>
+			    <tr>
+			      <td><a ng-click="updatedepartment(users.department.dname)">修改部门</a></td>
+			      
+			    </tr>
+			    
+			  </tbody>
+			</table>
+             </div>
+                <!--  -->
+    </div>
+    <div class="layui-tab-item">
+     <div class="col-md-5">
+     <span>当前的年假休假天数剩余{{users.count}}</span>
+     <hr>
+     <span>可休假的天数剩余{{getAllCount}}</span>
+     	<hr>
+		     	<form class="layui-form" action="">
+			      <div class="layui-form-item">
+			    <label class="layui-form-label">根据年份查询</label>
+			    <div class="layui-input-block">
+			      <select ng-model="yearlist" id="yearType" lay-verify="required">
+			      </select>
+			    </div>
+			  </div>
+			   <div class="layui-form-item">
+			    <div class="layui-input-block">
+			      <button class="layui-btn"   type="button" ng-click='getLeaveRecordsListAndyears()'>查询</button>
+			      
+			    </div>
+ 				 </div>
+		  </form>
+      			<table class="table table-hover">
+      			<thead>
+      				<tr>
+      					<th>天数</th>
+      					<th>原因</th>
+      					<th>开始时间</th>
+      					<th>结束时间</th>
+      					<th>录入时间</th>
+      					<th>状态</th>
+      					<th>操作</th>
+      				</tr>
+      			</thead>
+			  <tbody>
+			    <tr class="warning" ng-repeat="leaveRecois in LeaveRecordslis">
+			    	 
+			       <td>{{leaveRecois.lcount}}</td>
+			       <td>{{leaveRecois.leave_reason}}</td>
+			       <td>{{leaveRecois.leaveYearstart}}</td>
+			       <td>{{leaveRecois.leaveYearend}}</td>
+			       <td>{{leaveRecois.inputTime}}</td>
+			       <td>{{leaveRecois.stauts}}</td>
+			       <!-- <td><a class="layui-btn layui-btn-radius layui-btn-warm" ng-click='deleteLeaveRecois(leaveRecois.lid)'>修改</a></td> -->
+			       <td><a class="layui-btn layui-btn-radius layui-btn-danger" ng-click='DeleteLeaveRecords(leaveRecois.lid)'>删除</a></td>
+			     </tr>
+			  
+			  </tbody>
+			</table>
+		  </div>
+    </div>
+    <div class="layui-tab-item">
+    <form class="layui-form" action="">
+  <div class="layui-form-item">
+    <label class="layui-form-label">开始时间</label>
+    <div class="layui-input-block">
+      <input type="date"  ng-model='starttime' required  lay-verify="required" placeholder="开始时间" autocomplete="off" class="layui-input">
+    </div>
+     
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">结束时间</label>
+    <div class="layui-input-block">
+      <input type="date" ng-model='endtime' required  lay-verify="required" placeholder="结束时间" autocomplete="off" class="layui-input">
+    </div> 
+  </div>
+   
+    <div class="layui-form-item">
+    <label class="layui-form-label">审核</label>
+    <div class="layui-input-block">
+      <select  ng-model="stauts" id="stauts" lay-verify="required">
+         
+        <option value="批准">批准</option>
+        <option value="不通过">不通过</option>
+         
+      </select>
+    </div>
+  </div>
+  <div class="layui-form-item layui-form-text">
+    <label class="layui-form-label">理由</label>
+    <div class="layui-input-block">
+      <textarea ng-model='reason' placeholder="请输入内容" class="layui-textarea"></textarea>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <div class="layui-input-block">
+      <button class="layui-btn" ng-click='sendLeava_holiday()'>立即提交</button>
+      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+    </div>
+  </div>
+</form>
+    </div>
+    <!-- 选项卡结束 -->
+  </div>
+</div>
+                  
+        </div>   
+        <!-- row end -->
+	<!--  -->
+         </div>   
+        </div>
+        
+    <script type="text/javascript" src="js/angular.js"></script>
+	<script type="text/javascript" src="js/my/mycontacts.js"></script>
+<script type="text/javascript" src="js/layui.all.js"></script> 
+<script src="../src/layui.js"></script>
+<script type="text/javascript">
+		layui.use('form', function(){
+			  var form = layui.form
+			  var $ = layui.$;
+		  $ (function(){
+				$.ajax({
+					url:"/get_Sort_years_List",
+					type:"GET",
+					dataType : "json",
+					success:function(data){
+						
+						for(var i=0;i<data.length;i++){
+							$("#yearType").append("<option value='"+data[i]+"'>"+ data[i]+ "</option>");
+							 
+						}
+						form.render();//注意渲染页面表单，否则不显示数据
+					}
+				});
+				 
+		  });
+		});
+			 
+</script>
+ 
+<script>
+//JavaScript代码区域
+layui.use('element', function(){
+  var element = layui.element;
+  
+});
+</script>
+		 
+ <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script> 
+	  
+    <!-- 全局js -->
+  <!--    <script src="js/jquery.min.js?v=2.1.4"></script>  -->
+   	 <script type="text/javascript" src="js/layui.all.js"></script> 
+    <script src="js/bootstrap.min.js?v=3.3.6"></script>
+
+
+
+    <!-- 自定义js -->
+    <script src="js/content.js?v=1.0.0"></script>
+
+
+
+    <script>
+        $(document).ready(function () {
+            $('.contact-box').each(function () {
+                animationHover(this, 'pulse');
+            });
+        });
+    </script>
+
+    
+    
+
+</body>
+
+</html>

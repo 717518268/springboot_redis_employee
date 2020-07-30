@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wang.dao.LeaveRecordsMapper" >
+  <resultMap id="BaseResultMap" type="com.wang.pojo.LeaveRecords" >
+    <id column="uid" property="uid" jdbcType="VARCHAR" />
+    <result column="lid" property="lid" jdbcType="VARCHAR" />
+    <result column="lcount" property="lcount" jdbcType="INTEGER" />
+    <result column="leave_reason" property="leave_reason" jdbcType="VARCHAR" />
+    <result column="leave_yearstart" property="leaveYearstart" jdbcType="TIMESTAMP" />
+    <result column="leave_yearend" property="leaveYearend" jdbcType="TIMESTAMP" />
+    <result column="input_time" property="inputTime" jdbcType="TIMESTAMP" />
+    <result column="stauts" property="stauts" jdbcType="VARCHAR" />
+  </resultMap>
+   
+  <sql id="Base_Column_List" >
+    uid, lid, lcount, leave_reason,leave_yearstart, leave_yearend, input_time,stauts
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap">
+    select
+   
+    <include refid="Base_Column_List" />
+    from leave_records
+   
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from leave_records
+    where uid = #{uid,jdbcType=VARCHAR}
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from leave_records
+    where lid = #{lid,jdbcType=VARCHAR}
+  </delete>
+  
+  
+   
+  <insert id="insertSelective" parameterType="com.wang.pojo.LeaveRecords" >
+    insert into leave_records ( lid,uid, lcount,leave_reason, 
+      leave_yearstart, leave_yearend, input_time,stauts
+      )
+    values ( #{lid,jdbcType=VARCHAR},#{uid,jdbcType=VARCHAR},
+     #{lcount,jdbcType=INTEGER}, #{leave_reason,jdbcType=VARCHAR},
+      #{leaveYearstart,jdbcType=TIMESTAMP}, #{leaveYearend,jdbcType=TIMESTAMP}, 
+      #{inputTime,jdbcType=TIMESTAMP},#{stauts,jdbcType=VARCHAR}
+      )
+  </insert>
+  
+  
+  <insert id="insert" parameterType="com.wang.pojo.LeaveRecords" >
+    insert into leave_records
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+     
+      <if test="lid != null" >
+        lid,
+      </if>
+        <if test="uid != null" >
+        uid,
+      </if>
+      <if test="lcount != null" >
+        lcount,
+      </if>
+      <if test="leaveYearstart != null" >
+        leave_yearstart,
+      </if>
+      <if test="leaveYearend != null" >
+        leave_yearend,
+      </if>
+      <if test="inputTime != null" >
+        input_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="uid != null" >
+        #{uid,jdbcType=VARCHAR},
+      </if>
+      <if test="lid != null" >
+        #{lid,jdbcType=VARCHAR},
+      </if>
+      <if test="lcount != null" >
+        #{lcount,jdbcType=INTEGER},
+      </if>
+      <if test="leaveYearstart != null" >
+        #{leaveYearstart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="leaveYearend != null" >
+        #{leaveYearend,jdbcType=TIMESTAMP},
+      </if>
+      <if test="inputTime != null" >
+        #{inputTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample"   resultType="java.lang.Integer" >
+    select count(lid) from leave_records
+  
+  </select>
+  
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.wang.pojo.LeaveRecords" >
+    update leave_records
+    <set >
+       
+      <if test="lcount != null" >
+        lcount = #{lcount,jdbcType=INTEGER},
+      </if>
+      <if test="leaveYearstart != null" >
+        leave_yearstart = #{leaveYearstart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="leaveYearend != null" >
+        leave_yearend = #{leaveYearend,jdbcType=TIMESTAMP},
+      </if>
+      <if test="inputTime != null" >
+        input_time = #{inputTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="stauts != null" >
+        stauts = #{stauts},
+      </if>
+    </set>
+    where lid = #{lid,jdbcType=VARCHAR}
+  </update>
+  
+   
+  
+</mapper>

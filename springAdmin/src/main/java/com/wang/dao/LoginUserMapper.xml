@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wang.dao.LoginUserMapper" >
+  <resultMap id="BaseResultMap" type="com.wang.pojo.LoginUser" >
+    <id column="lid" property="lid" jdbcType="VARCHAR" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="pass_word" property="passWord" jdbcType="VARCHAR" />
+    <result column="count" property="count" jdbcType="INTEGER" />
+    <result column="creattime" property="creattime" jdbcType="TIMESTAMP" />
+    <result column="ruler" property="ruler" jdbcType="VARCHAR" />
+    
+  </resultMap>
+   
+  <sql id="Base_Column_List" >
+    lid, user_name, pass_word, count, creattime,ruler
+  </sql>
+ 
+  <select id="selectByLogin" resultMap="BaseResultMap" parameterType="com.wang.pojo.LoginUser" >
+    select 
+    <include refid="Base_Column_List" />
+    from login_user
+    where user_name = #{userName,jdbcType=VARCHAR} and pass_word = #{passWord,jdbcType=VARCHAR}
+    limit 1
+  </select>
+  
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from login_user
+    where lid = #{lid,jdbcType=VARCHAR}
+  </delete>
+  
+  
+  
+  <insert id="insert" parameterType="com.wang.pojo.LoginUser" >
+    insert into login_user (lid, user_name, pass_word, 
+      count, creattime,ruler)
+    values (#{lid,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{passWord,jdbcType=VARCHAR}, 
+      #{count,jdbcType=INTEGER}, #{creattime,jdbcType=TIMESTAMP},#{ruler,jdbcType=VARCHAR})
+  </insert>
+  
+  
+  
+  
+  <insert id="insertSelective" parameterType="com.wang.pojo.LoginUser" >
+    insert into login_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="lid != null" >
+        lid,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="passWord != null" >
+        pass_word,
+      </if>
+      <if test="count != null" >
+        count,
+      </if>
+       
+      <if test="creattime != null" >
+        creattime,
+      </if>
+       <if test="ruler != null" >
+        ruler,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="lid != null" >
+        #{lid,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="passWord != null" >
+        #{passWord,jdbcType=VARCHAR},
+      </if>
+      <if test="count != null" >
+        #{count,jdbcType=INTEGER},
+      </if>
+       
+      <if test="creattime != null" >
+        #{creattime,jdbcType=TIMESTAMP},
+      </if>
+       <if test="ruler != null" >
+        #{ruler,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+ 
+ 
+ 
+
+  <update id="updateByCount" parameterType="com.wang.pojo.LoginUser" >
+    update login_user
+    set
+      count = #{count,jdbcType=INTEGER}     
+    where lid = #{lid,jdbcType=VARCHAR}
+  </update>
+  
+  
+  
+</mapper>

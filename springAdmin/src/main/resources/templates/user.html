@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+ <link rel="stylesheet" href="css/layui.css" />
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<link rel="stylesheet" href="css/zui.min.css" />
+		<script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+		<script type="text/javascript" src="js/layui.js"></script>
+		 	
+	</head>
+	<body ng-app='app' ng-controller='mainController' class="layui-layout-body">
+	 
+  
+  <div class="layui-body">
+    <!-- 内容主体区域 -->
+    	<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+		  <ul class="layui-tab-title">
+		    <li class="layui-this"> 根据部门查询查询</li>
+		    <li class="layui-this"> 根据名字查询</li>	 
+		  </ul>
+		  <div class="layui-tab-content">
+		    <div class="layui-tab-item layui-show"> 
+	
+		    <form class="layui-form">
+  
+			  <div class="layui-form-item">
+			    <label class="layui-form-label">根据部门 </label>
+			    <div class="layui-input-block">
+			      <select name="classType" id="classType" ng-model="sid" >
+			        
+			      </select>
+			    </div>
+			  </div>
+			  <div class="layui-form-item">
+			  <div class="col-xs-5"> 
+			    <label class="layui-form-label"> 根据年份查询</label>
+			    <div class="layui-input-block">
+			      <select name="yearType" id="yearType" ng-model="yearType" >
+			        
+			      </select>
+			    </div>
+			    </div>
+			  </div>
+			  <div class="layui-form-item">
+			    <div class="layui-input-block">
+			      <button class="layui-btn" type="button"  ng-click="getStudentByClass()">搜索</button>
+			    </div>
+			  </div>
+			</form>
+			<button class="layui-btn" onclick="toExcel()">生成表格 </button>
+			<hr>
+		     <table class="layui-table" id="table_report" border="1">
+		  <thead>
+		    <tr>
+		       
+		      <th>编号</th>
+		       
+		       <th>姓名</th>
+		        <th>性别</th>
+		       
+		        <th>入职时间</th>
+		         <th>工龄</th>
+		         <th>累积休假的天数</th>
+		        <th>操作</th>
+		    </tr> 
+		  </thead>
+		  <tbody  >
+		     <tr  ng-repeat='comment in commentArr track by $index'>
+		     	 
+		     	<td>{{comment.number}}</td>
+		     	<td>{{comment.username}}</td>
+		     	<td>{{comment.sex}}</td>
+		     	
+		     	<td>{{comment.registertime}}</td>
+		     	<td>{{comment.yearanmethod}}</td>
+		     	<td>{{comment.count}}</td>
+				<td><a  class="btn btn-info"  href="/contacts.html?id={{comment.id}}" >查看个人</a>
+				  <a class="layui-btn layui-btn-normal" ng-click="updateUserStauts(comment.id,comment.username,comment.registertime)">离职</a>
+				 <a class="btn btn-danger" ng-click="deleteoneEmptUser(comment.id)">删除</a>
+				
+				</td>
+		     	
+		     </tr>
+		  </tbody>
+		</table>
+		 	 
+			</div>
+		     <div class="layui-tab-item">
+		     <div class="input-group">
+		     
+		     
+				  <div class="input-control search-box search-box-circle has-icon-left has-icon-right search-example" id="searchboxExample">
+				    <input  type="text"  class="form-control search-input"  ng-model="username" placeholder="搜索">
+				   
+				  </div>
+				  <span class="input-group-btn">
+				    <button class="btn btn-primary" ng-click="getUserNameForContent()" type="button">搜索</button>
+				  </span>
+				</div>
+				 <table class="layui-table">
+		  <thead>
+		    <tr>
+		       
+		      <th>编号</th>
+		       
+		       <th>姓名</th>
+		        <th>性别</th>
+		       
+		        <th>入职时间</th>
+		        <th>部门</th>
+		         <th>工龄</th>
+		         <th>累积休假的天数</th>
+		        <th>操作</th>
+		    </tr> 
+		  </thead>
+		  <tbody  >
+		     <tr  >
+		     	 
+		     	<td>{{commentnams.number}}</td>
+		     	<td>{{commentnams.username}}</td>
+		     	<td>{{commentnams.sex}}</td>
+		     	
+		     	<td>{{commentnams.registertime}}</td>
+		     	<td>{{commentnams.department.dname}}</td>
+		     	<td>{{commentnams.yearanmethod}}</td>
+		     	<td>{{commentnams.count}}</td>
+				<td><a  class="student-update layui-btn layui-btn-normal "  href="/contacts.html?id={{commentnams.id}}" >查看个人</a>
+				<a class="layui-btn layui-btn-normal" ng-click="updateUserStauts(commentnams.id,commentnams.username,commentnams.registertime)">离职</a>
+				<button class="layui-btn layui-btn-danger" type="button" ng-click="deleteoneEmptUser(commentnams.id)">删除</button>
+				</td>
+		     	
+		     </tr>
+		  </tbody>
+		</table>
+				
+		     
+		     </div>
+		    
+		  
+		  
+			 
+		  </div>
+		</div>
+    <!-- end -->
+  </div>
+  
+  <div class="layui-footer">
+    
+  </div>
+</div>
+ 
+<script>
+//JavaScript代码区域
+layui.use('element', function(){
+  var element = layui.element;
+  
+});
+</script>
+	 
+		 <script src="js/layui.all.js"></script>
+		 	
+		<script type="text/javascript" src="js/zui.min.js"></script>
+		<script type="text/javascript">
+		layui.use('form', function(){
+			  var form = layui.form
+			  var $ = layui.$;
+		    $ (function(){
+				$.ajax({
+					url:"/getDepartmentlist",
+					type:"GET",
+					dataType : "json",
+					success:function(data){
+						$("#classType").append("<option value='all'>全部</option>");
+						for(var i=0;i<data.length;i++){
+							$("#classType").append("<option value='"+data[i].nid+"'>"+ data[i].dname+ "</option>");
+							 
+						}
+						form.render();//注意渲染页面表单，否则不显示数据
+					}
+				});
+				
+				$.ajax({
+					url:"/get_Sort_years_List",
+					type:"GET",
+					dataType : "json",
+					success:function(data){
+						 
+						$("#yearType").append("<option value='all'>全部</option>");
+					//	for(var i=0;i<data.length;i++){
+						//	$("#yearType").append("<option value='"+data[i]+"'>"+ data[i]+ "</option>");
+							 
+				//		}
+						form.render();//注意渲染页面表单，否则不显示数据
+					}
+				});
+						
+				
+		    });
+});
+		 	//根据id搜索学生
+		  
+		
+		 	function toExcel(){
+			      //window.location.href='<%=basePath%>pmb/excelShowInfo.do';
+			      //获取表格
+			      var exportFileContent = document.getElementById("table_report").outerHTML;               
+			      //设置格式为Excel，表格内容通过btoa转化为base64，此方法只在文件较小时使用(小于1M)
+			      //exportFileContent=window.btoa(unescape(encodeURIComponent(exportFileContent)));
+			      //var link = "data:"+MIMEType+";base64," + exportFileContent;
+			      //使用Blob
+			      var blob = new Blob([exportFileContent], {type: "text/plain;charset=utf-8"});         //解决中文乱码问题
+			      blob =  new Blob([String.fromCharCode(0xFEFF), blob], {type: blob.type});
+			    //设置链接
+			      var link = window.URL.createObjectURL(blob);
+			      var a = document.createElement("a");    //创建a标签
+			      a.download = "员工年假统计.xls";  //设置被下载的超链接目标（文件名）
+			      a.href = link;                            //设置a标签的链接
+			      document.body.appendChild(a);            //a标签添加到页面
+			      a.click();                                //设置a标签触发单击事件
+			      document.body.removeChild(a);            //移除a标签
+			 }
+		</script>
+		
+	 
+		<script type="text/javascript" src="js/angular.js"></script>
+		 <script type="text/javascript" src="js/my/myuser.js"> </script>
+		<script src="js/jquery-3.3.1.min.js"></script>
+
+</body>
+</html>
